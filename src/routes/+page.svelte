@@ -250,6 +250,10 @@
 		background-color: $grey-dark;
 		border-radius: 1rem;
 
+        @media (max-width: 768px) {
+            padding-top: 10vh;
+        }
+
 		.selected-company {
 			inset: 0;
 			display: flex;
@@ -320,6 +324,7 @@
 
 			.icon {
 				flex-shrink: 0;
+                animation: spin 2s ease infinite;
 			}
 		}
 
@@ -407,6 +412,7 @@
 			font-size: 4.5rem;
 			margin-bottom: 2rem;
 			text-align: center;
+            line-height: 1.15;
 
 			.accent {
 				font-family: 'Crimson Text', serif;
@@ -414,4 +420,14 @@
 			}
 		}
 	}
+
+    @keyframes spin {
+        from {
+            transform: rotate(0deg);
+        }
+
+        to {
+            transform: rotate(360deg);
+        }
+    }
 </style>
