@@ -56,7 +56,7 @@
                 <svg width="20px" height="20px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="currentColor"><path d="M12 11.5V16.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M12 7.51L12.01 7.49889" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
             </span>
             <span class="text">
-                Brine is not yet multilingual - search in English
+                MVP - expect weird behavior
             </span>
         </div>
 
@@ -122,7 +122,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        padding: 2rem;
+        padding: 1rem;
     }
 
     .results-container {
@@ -200,6 +200,7 @@
         .info {
             display: flex;
             flex-direction: row;
+            align-items: center;
             border: solid 1px $grey-border;
             padding: .5rem .7rem .4rem .5rem;
             border-radius: 99999px;
@@ -207,6 +208,10 @@
             font-size: .9rem;
             opacity: .7;
             margin-bottom: 1rem;
+
+            .icon {
+                flex-shrink: 0;
+            }
         }
 
         textarea {
@@ -275,6 +280,7 @@
         h1 {
             font-size: 4.5rem;
             margin-bottom: 2rem;
+            text-align: center;
 
             .accent {
                 font-family: 'Crimson Text', serif;

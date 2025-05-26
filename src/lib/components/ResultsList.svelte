@@ -23,8 +23,9 @@
         display: flex;
         flex-direction: column;
         gap: 1rem;
-        width: 100%;
         width: 600px;
+        max-width: 100vw;
+        padding: 1rem;
     }
 
 </style>
