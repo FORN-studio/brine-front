@@ -68,7 +68,7 @@
                 <div class="company">
                     <h2>{selection.activeCompany.company_name.toLowerCase()}</h2>
                     <p>
-                        {selection.activeCompany.company_description}
+                        {selection.activeCompany.company_description.substring(0, 200)}...
                     </p>
                 </div>
                 <div class="controls">
