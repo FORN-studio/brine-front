@@ -1,7 +1,7 @@
-import { API_URL } from '$env/static/private';
+import { PUBLIC_API_URL } from '$env/static/public';
 
 export const search = async (query, limit = 5) => {
-    const response = await fetch(`${API_URL}/search`, {
+    const response = await fetch(`${PUBLIC_API_URL}/search`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -15,7 +15,7 @@ export const search = async (query, limit = 5) => {
 }
 
 export const similar = async (companyId, limit = 5) => {
-    const response = await fetch(`${API_URL}/similar`, {
+    const response = await fetch(`${PUBLIC_API_URL}/similar`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -30,7 +30,7 @@ export const similar = async (companyId, limit = 5) => {
 
 export const getRandomId = async () => {
     const randomIndex = Math.floor(Math.random() * 8000)
-    const response = await fetch(`${API_URL}/company/${randomIndex}`);
+    const response = await fetch(`${PUBLIC_API_URL}/company/${randomIndex}`);
 
     const res = await response.json();
     const result = await similar(res.company_id);
