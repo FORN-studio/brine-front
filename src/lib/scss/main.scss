@@ -1,14 +1,17 @@
 @use './variables' as *;
 
-*, *::after, *::before {
-    font-family: 'Montserrat', sans-serif;
-    color: $grey-light;
+*,
+*::after,
+*::before {
+	font-family: 'Montserrat', sans-serif;
+	color: $grey-light;
 }
 
 .serif {
-    font-family: 'Crimson Text', serif;
+	font-family: 'Crimson Text', serif;
 }
 
-html, body {
-    background-color: $grey-dark;
+html,
+body {
+	background-color: $grey-dark;
 }
