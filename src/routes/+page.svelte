@@ -2,9 +2,47 @@
 	import { search, similar, getRandomId } from '$lib/api';
 	import { selection } from '$lib/state.svelte';
 	import { slide } from 'svelte/transition';
+    import { onMount } from 'svelte';
+    import { PUBLIC_API_URL } from '$env/static/public';
 	import ResultsList from '$lib/components/ResultsList.svelte';
 
 	let query = $state('');
+    let modelReady = $state(true)
+    let interval = $state(null)
+
+	onMount(async () => {
+        modelReady = await checkModelReadiness()
+        if (modelReady) return
+
+        else {
+            modelReady = false
+            interval = setInterval(async () => {
+                const ready = await checkModelReadiness()
+                if (ready) {
+                    modelReady = true
+                    clearInterval(interval)
+                }
+            }, 1000);
+        }
+
+		
+	});
+
+    const checkModelReadiness = async () => {
+        try {
+            const res = await fetch(`${PUBLIC_API_URL}/search`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ query: 'test' })
+            });
+
+            return res.status == 200
+        } catch {
+            return false
+        }
+    }
 
 	const handleSearch = async () => {
 		if (query.length <= 3) {
@@ -49,39 +87,14 @@
 	<div class="query-container">
 		<h1 class="serif">This is <span class="accent">Brine</span></h1>
 
-		<div class="info">
-			<span class="icon">
-				<svg
-					width="20px"
-					height="20px"
-					stroke-width="1.5"
-					viewBox="0 0 24 24"
-					fill="none"
-					xmlns="http://www.w3.org/2000/svg"
-					color="currentColor"
-					><path
-						d="M12 11.5V16.5"
-						stroke="currentColor"
-						stroke-width="1.5"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-					></path><path
-						d="M12 7.51L12.01 7.49889"
-						stroke="currentColor"
-						stroke-width="1.5"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-					></path><path
-						d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
-						stroke="currentColor"
-						stroke-width="1.5"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-					></path></svg
-				>
-			</span>
-			<span class="text"> MVP - expect weird behavior </span>
-		</div>
+        {#if !modelReady}
+            <div class="info" transition:slide={{ duration: 300, axis: 'y' }}>
+                <span class="icon">
+                    <svg width="20px" height="20px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="currentColor"><path d="M3 7L6.5 9M21 17L17.5 15M12 12L6.5 9M12 12L6.5 15M12 12V5M12 12V18.5M12 12L17.5 15M12 12L17.5 9M12 2V5M12 22V18.5M21 7L17.5 9M3 17L6.5 15M6.5 9L3 10M6.5 9L6 5.5M6.5 15L3 14M6.5 15L6 18.5M12 5L9.5 4M12 5L14.5 4M12 18.5L14.5 20M12 18.5L9.5 20M17.5 15L18 18.5M17.5 15L21 14M17.5 9L21 10M17.5 9L18 5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                </span>
+                <span class="text"> Model is cold starting, give me a minute... </span>
+            </div>
+        {/if}
 
 		{#if selection.activeCompany}
 			<div class="selected-company" transition:slide={{ duration: 300, axis: 'y' }}>
@@ -125,12 +138,13 @@
 			</div>
 		{:else}
 			<textarea
+				class:disabled={!modelReady}
 				transition:slide={{ duration: 300, axis: 'y' }}
 				bind:value={query}
-				placeholder="Enter your query here"
+				placeholder="What kind of company are you looking for?"
 				oninput={handleDebouncedSearch}
 			></textarea>
-			<div class="actions" transition:slide={{ duration: 300, axis: 'y' }}>
+			<div class="actions" class:disabled={!modelReady} transition:slide={{ duration: 300, axis: 'y' }}>
 				<button class="lucky" onclick={randomize}>
 					<span class="icon">
 						<svg
@@ -319,6 +333,12 @@
 			padding-bottom: 75px;
 			resize: none;
 			field-sizing: content;
+            transition: ease all 300ms;
+
+            &.disabled {
+                opacity: 0.3;
+                pointer-events: none;
+            }
 		}
 
 		.actions {
@@ -333,6 +353,12 @@
 			right: 0;
 			padding: 1rem;
 			height: 75px;
+            transition: ease all 300ms;
+
+            &.disabled {
+                opacity: 0.3;
+                pointer-events: none;
+            }
 
 			button {
 				display: flex;

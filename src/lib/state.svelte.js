@@ -1,1 +1,1 @@
-export const selection = $state({ activeCompany: null, similarCompanies: [], searchResults: [] });
+export const selection = $state({ activeCompany: null, similarCompanies: [], searchResults: [], loading: true });

@@ -76,6 +76,7 @@
 			display: flex;
 			flex-direction: row;
 			justify-content: space-between;
+			align-items: center;
 
 			h2 {
 				text-transform: capitalize;
@@ -89,6 +90,7 @@
 				border: solid 1px $grey-border;
 				cursor: pointer;
 				transition: ease all 300ms;
+				white-space: nowrap;
 
 				&:hover {
 					background-color: $forn;
